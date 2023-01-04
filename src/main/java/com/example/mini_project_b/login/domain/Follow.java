@@ -1,4 +1,4 @@
-package com.example.mini_project_b.login.domain.DTO;
+package com.example.mini_project_b.login.domain;
 
 import com.example.mini_project_b.login.domain.Member;
 import lombok.AllArgsConstructor;

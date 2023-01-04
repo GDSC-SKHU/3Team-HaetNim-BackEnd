@@ -7,24 +7,21 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-// 좋아요 : https://gilssang97.tistory.com/46
 @Getter
 @Builder
 @NoArgsConstructor
 @Entity
-@Table(name = "post_hashtag")
+@Table(name = "post_like")
 @AllArgsConstructor
-public class PostHashtag {
+public class PostLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "posthashtag_id", nullable = false)
+    @Column(name = "postlike_id", nullable = false)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
     @ManyToOne
-    @JoinColumn(name = "hashtag_id")
-    private Hashtag hashtag;
+    @JoinColumn(name = "member_id")
+    private Member member;
 }
