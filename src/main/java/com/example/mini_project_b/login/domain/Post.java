@@ -33,6 +33,11 @@ public class Post extends BaseTimeEntity {
     @Column(name = "disclosure", nullable = false)
     private boolean disclosure;
 
+    @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+
 //    @OneToMany(mappedBy = "posts", fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 //    @JoinTable(name="post_hashtag", joinColumns=@JoinColumn(name="post_id"), inverseJoinColumns=@JoinColumn(name="hashtag_id"))
 //    private List<PostHashtag> postHashtags = new ArrayList<PostHashtag>();

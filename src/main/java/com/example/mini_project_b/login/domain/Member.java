@@ -1,7 +1,6 @@
 package com.example.mini_project_b.login.domain;
 
 
-import com.example.mini_project_b.login.domain.DTO.Follow;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,9 +45,9 @@ public class Member implements UserDetails {
     @OneToMany(mappedBy = "followee",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private  List<Follow> followeeList;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name="post_likes", joinColumns=@JoinColumn(name="member_id"), inverseJoinColumns=@JoinColumn(name="post_id"))
-    private List<Member> members;
+    // post foreignkey 생성
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Post> posts =new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
