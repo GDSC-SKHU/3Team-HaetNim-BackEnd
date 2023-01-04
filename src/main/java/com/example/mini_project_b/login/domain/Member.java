@@ -1,7 +1,7 @@
 package com.example.mini_project_b.login.domain;
 
 
-import com.example.mini_project_b.follow.DTO.Follow;
+import com.example.mini_project_b.login.domain.DTO.Follow;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,12 +19,15 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "member")
 @Entity
 public class Member implements UserDetails {
+
     @GeneratedValue
     @Id
     @Column(name = "id", nullable = false)
-    private Long id;
+    private String memberId;
+
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
@@ -37,9 +40,6 @@ public class Member implements UserDetails {
     @Column(name="statusMessage",nullable = false,length = 100)
     private String statusMessage;
 
-    //    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinTable(name="follow")
-//    private List<Follow> follows;
     @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Follow> followerList;
 
@@ -47,7 +47,7 @@ public class Member implements UserDetails {
     private  List<Follow> followeeList;
 
     @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name="post_likes", joinColumns=@JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="post_id"))
+    @JoinTable(name="post_likes", joinColumns=@JoinColumn(name="member_id"), inverseJoinColumns=@JoinColumn(name="post_id"))
     private List<Member> members;
 
     @ElementCollection(fetch = FetchType.EAGER)

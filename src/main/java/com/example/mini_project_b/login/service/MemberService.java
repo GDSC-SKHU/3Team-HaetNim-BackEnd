@@ -1,5 +1,6 @@
 package com.example.mini_project_b.login.service;
 
+import com.example.mini_project_b.login.domain.DTO.MemberLoginRequestDto;
 import com.example.mini_project_b.login.domain.DTO.TokenInfo;
 import com.example.mini_project_b.login.jwt.JwtTokenProvider;
 import com.example.mini_project_b.login.repository.MemberRepository;
@@ -20,13 +21,18 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public TokenInfo login(String memberId, String password) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
-
+    public TokenInfo login(MemberLoginRequestDto memberLoginRequestDto) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberLoginRequestDto.getMemberId(),memberLoginRequestDto.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-
         return tokenInfo;
     }
+
+//    @Transactional
+//    public TokenInfo login(String memberId, String password) {
+//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
+//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+//        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+//        return tokenInfo;
+//    }
 }
