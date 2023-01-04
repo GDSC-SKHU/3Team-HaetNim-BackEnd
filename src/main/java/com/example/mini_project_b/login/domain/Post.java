@@ -33,8 +33,10 @@ public class Post extends BaseTimeEntity {
     @Column(name = "disclosure", nullable = false)
     private boolean disclosure;
 
-    @ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name="post_hashtag", joinColumns=@JoinColumn(name="post_id"), inverseJoinColumns=@JoinColumn(name="hashtag_id"))
-    private List<Hashtag> hashtags;
+//    @OneToMany(mappedBy = "posts", fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+//    @JoinTable(name="post_hashtag", joinColumns=@JoinColumn(name="post_id"), inverseJoinColumns=@JoinColumn(name="hashtag_id"))
+//    private List<PostHashtag> postHashtags = new ArrayList<PostHashtag>();
+
+
 
 }
