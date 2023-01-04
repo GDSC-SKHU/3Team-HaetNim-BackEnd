@@ -1,5 +1,6 @@
 package com.example.mini_project_b.login.service;
 
+
 import com.example.mini_project_b.login.domain.Member;
 import com.example.mini_project_b.login.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
