@@ -47,4 +47,5 @@ public class MemberController {
     public String test() {
         return "success";
     }
+
 }

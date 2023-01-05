@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -28,4 +29,8 @@ public class PostDTO {
 
     @NotBlank
     private boolean disclosure;
+
+    private LocalDateTime createDate;
+
+    private LocalDateTime lastModifiedDate;
 }

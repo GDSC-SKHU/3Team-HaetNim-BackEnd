@@ -44,13 +44,24 @@ public class Post extends BaseTimeEntity {
 //    private List<PostHashtag> postHashtags = new ArrayList<PostHashtag>();
 
     public PostDTO toDTO(){
+        System.out.println(createDate);
         return PostDTO.builder()
                 .id(id)
                 .title(title)
                 .content(content)
                 .img(img)
                 .disclosure(disclosure)
+                .createDate(createDate)
+                .lastModifiedDate(lastModifiedDate)
                 .build();
+    }
+
+
+    public void update(PostDTO dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.img=dto.getImg();
+        this.disclosure=dto.isDisclosure();
     }
 
 
