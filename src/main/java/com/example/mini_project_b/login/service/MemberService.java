@@ -62,7 +62,7 @@ public class MemberService {
     @Transactional
     public MemberJoinDto findByUserPostId(String member_id) {
         Member member = findEntityByMemberId(member_id);
-        return member.toEntity();
+        return member.toJoinEntity();
     }
 
 

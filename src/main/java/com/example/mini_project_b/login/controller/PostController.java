@@ -64,10 +64,11 @@ public class PostController {
 
         PostDTO response = postService.findByMemberId(memberId,postId);
 
-
         return ResponseEntity
                 .ok(response);
     }
+
+
 
 
     // {memberId}의 게시물을 생성 할 수 있도록 하는 POST api
@@ -113,5 +114,6 @@ public class PostController {
         // /api/members/id URI 생성
         return ResponseEntity.ok("post Delete success");
     }
+
     
 }

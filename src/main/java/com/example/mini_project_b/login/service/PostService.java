@@ -1,5 +1,6 @@
 package com.example.mini_project_b.login.service;
 
+import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import com.example.mini_project_b.login.domain.Member;
 import com.example.mini_project_b.login.domain.Post;
@@ -82,9 +83,16 @@ public class PostService {
         if(!member_id.equals(post.getMember().getMemberId()))
 //            System.out.println(member_id+" "+principal.getName());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,member_id+"는 이 게시글을 가지고 있지 않습니다.");
+        MemberJoinDto member = findByUserPostId(member_id);
 
-        return post.toDTO();
+
+        PostDTO postDTO = post.toDTO();
+//        System.out.println("@@@@@@@@@@@@@ "+post.getMember().getMemberId());
+        postDTO.setMemberJoinDto(member);
+        return postDTO;
     }
+
+
 
     // accessToken의 사용자와 {memberId}와 같다면 게시물 수정 가능
     @Transactional
@@ -113,6 +121,12 @@ public class PostService {
         Post post = findEntityById(id);
 
         postRepository.delete(post);
+    }
+
+    @Transactional
+    public MemberJoinDto findByUserPostId(String member_id) {
+        Member member = findEntityByMemberId(member_id);
+        return member.toJoinEntity();
     }
 
     Member findEntityByMemberId(String member_id){

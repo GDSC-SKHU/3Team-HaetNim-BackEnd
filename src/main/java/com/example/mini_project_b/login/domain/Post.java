@@ -44,7 +44,6 @@ public class Post extends BaseTimeEntity {
 //    private List<PostHashtag> postHashtags = new ArrayList<PostHashtag>();
 
     public PostDTO toDTO(){
-        System.out.println(createDate);
         return PostDTO.builder()
                 .id(id)
                 .title(title)

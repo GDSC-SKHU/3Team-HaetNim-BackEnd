@@ -105,7 +105,7 @@ public class Member implements UserDetails {
     }
 
 
-    public MemberJoinDto toEntity() {
+    public MemberJoinDto toJoinEntity() {
         return MemberJoinDto.builder()
                 .nickname(nickname)
                 .statusMessage(statusMessage)
