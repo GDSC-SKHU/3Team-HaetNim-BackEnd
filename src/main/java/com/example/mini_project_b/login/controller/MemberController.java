@@ -32,12 +32,12 @@ public class MemberController {
         TokenDTO tokenDTO = memberService.login(memberID, password);
         return tokenDTO;
     }
-//    @PostMapping("/join")
-//    public ResponseEntity<String> join(@RequestBody MemberJoinDto memberJoinDto) {
-//        memberService.join(memberJoinDto);
-//        return ResponseEntity.ok("가입성공");
-//    }
-//
+    @PostMapping("/join")
+    public ResponseEntity<String> join(@RequestBody MemberJoinDto memberJoinDto) {
+        memberService.join(memberJoinDto);
+        return ResponseEntity.ok("가입성공");
+    }
+
     @GetMapping("/index")
     public ResponseEntity<String> index() {
         return ResponseEntity.ok("index");
@@ -47,5 +47,4 @@ public class MemberController {
     public String test() {
         return "success";
     }
-//}
 }
