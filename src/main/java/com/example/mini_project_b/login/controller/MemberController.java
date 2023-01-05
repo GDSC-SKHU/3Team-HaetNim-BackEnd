@@ -62,6 +62,9 @@ public class MemberController {
         return ResponseEntity.ok("가입성공");
     }
 
+
+
+
     // 메인화면에 출력될 수 있는 GET api
     @GetMapping("/main")
     public ResponseEntity<List<PostDTO>> mainFindAll(

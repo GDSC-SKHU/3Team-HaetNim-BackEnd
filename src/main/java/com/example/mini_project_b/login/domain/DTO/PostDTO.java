@@ -1,5 +1,6 @@
 package com.example.mini_project_b.login.domain.DTO;
 
+import com.example.mini_project_b.login.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,4 +34,6 @@ public class PostDTO {
     private LocalDateTime createDate;
 
     private LocalDateTime lastModifiedDate;
+
+    private Member member;
 }

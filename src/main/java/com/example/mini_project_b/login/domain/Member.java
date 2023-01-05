@@ -1,6 +1,7 @@
 package com.example.mini_project_b.login.domain;
 
 
+import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,6 +94,25 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public void update(MemberJoinDto dto) {
+        if(dto.getNickname() !=null)
+            this.nickname = dto.getNickname();
+        if(dto.getStatusMessage() != null)
+            this.statusMessage = dto.getStatusMessage();
+        if(dto.getProfileImg() != null)
+            this.profileImg = dto.getProfileImg();
+    }
+
+
+    public MemberJoinDto toEntity() {
+        return MemberJoinDto.builder()
+                .nickname(nickname)
+                .statusMessage(statusMessage)
+                .profileImg(profileImg)
+                .build();
+    }
+
 }
     /**
      * - user : post = 1 : n

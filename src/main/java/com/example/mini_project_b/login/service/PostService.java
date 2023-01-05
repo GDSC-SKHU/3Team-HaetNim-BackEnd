@@ -117,7 +117,7 @@ public class PostService {
 
     Member findEntityByMemberId(String member_id){
         return memberRepository.findByMemberId(member_id)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 팀은 찾을 수 없습니다."));
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 사용자를 찾을 수 없습니다."));
     }
 
     Post findEntityById(Long id){
