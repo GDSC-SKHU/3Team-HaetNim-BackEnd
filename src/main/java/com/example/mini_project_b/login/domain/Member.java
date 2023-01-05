@@ -48,6 +48,9 @@ public class Member implements UserDetails {
     // post foreignkey 생성
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Post> posts =new ArrayList<>();
+//
+//    @Enumerated(EnumType.STRING)
+//    private Role role;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -61,7 +64,7 @@ public class Member implements UserDetails {
     }
     @Override
     public String getUsername() {
-        return getUsername();
+        return memberId;
     }
     @Override
     public String getPassword() {
@@ -84,9 +87,10 @@ public class Member implements UserDetails {
         return true;
     }
 }
-/**
- * - user : post = 1 : n
- * - user : user_post_like = 1: n
- * - user : follow = n : m
- * - post : post_like = 1 : n
- */
+    /**
+     * - user : post = 1 : n
+     * - user : user_post_like = 1: n
+     * - user : follow = n : m
+     * - post : post_like = 1 : n
+     */
+

@@ -1,5 +1,6 @@
 package com.example.mini_project_b.login.domain;
 
+import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,10 +25,10 @@ public class Post extends BaseTimeEntity {
     @Column(name = "title", nullable = false, length = 150)
     private String title;
 
-    @Column(name = "content", nullable = false, length = 500)
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "img", nullable = true,length = 150)
+    @Column(name = "img", nullable = true, length = 300)
     private String img;
 
     @Column(name = "disclosure", nullable = false)
@@ -41,6 +42,18 @@ public class Post extends BaseTimeEntity {
 //    @OneToMany(mappedBy = "posts", fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 //    @JoinTable(name="post_hashtag", joinColumns=@JoinColumn(name="post_id"), inverseJoinColumns=@JoinColumn(name="hashtag_id"))
 //    private List<PostHashtag> postHashtags = new ArrayList<PostHashtag>();
+
+    public PostDTO toDTO(){
+        return PostDTO.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .img(img)
+                .disclosure(disclosure)
+                .build();
+    }
+
+
 
 
 

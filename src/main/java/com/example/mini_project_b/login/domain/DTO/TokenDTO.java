@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 @Data
 @AllArgsConstructor
-public class TokenInfo {
+public class TokenDTO {
     private String grantType;
     private String accessToken;
     private String refreshToken;

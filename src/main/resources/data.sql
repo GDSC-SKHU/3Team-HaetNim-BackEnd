@@ -1,9 +1,9 @@
 use jwt;
 
-insert into member(id, nickname, password,profile_img,status_message) values ('member_A','hello','qw12',false,'굳!!');
-insert into member(id, nickname, password,profile_img,status_message) values ('member_B','helloee','qw12',false,'굳!!');
-insert into member_roles(member_id, roles) values ('member_A', 'USER');
-
+insert into member(id, nickname, password,profile_img,status_message) values ('member_A','hello','1234',false,'굳!!');
+insert into member(id, nickname, password,profile_img,status_message) values ('member_B','helloee','1234',false,'굳!!');
+insert into member_roles(member_id, roles) values ('member_A', 'ADMIN');
+insert into member_roles(member_id, roles) values ('member_B', 'USER');
 
 -- follow 임시 저장
 insert into follow(follower_Id,following_Id) values ('member_A','member_B');

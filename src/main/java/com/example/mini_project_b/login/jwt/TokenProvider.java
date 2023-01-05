@@ -1,6 +1,6 @@
 package com.example.mini_project_b.login.jwt;
 
-import com.example.mini_project_b.login.domain.DTO.TokenInfo;
+import com.example.mini_project_b.login.domain.DTO.TokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -22,38 +22,41 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class JwtTokenProvider {
+public class TokenProvider {
     private final Key key;
+    private final long validityTime;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
+    public TokenProvider(
+            @Value("${jwt.secret}") String secretKey,
+            @Value("${jwt.token-validity-in-milliseconds}") long validityTime)  {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.validityTime = validityTime;
     }
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
-    public TokenInfo generateToken(Authentication authentication) {
+    public TokenDTO createToken(Authentication authentication) {
         // 권한 가져오기
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        // Access Token 생성
-        Date accessTokenExpiresIn = new Date(now + 86400000);
+        Date tokenExpiredTime = new Date(now + validityTime);
+
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
-                .setExpiration(accessTokenExpiresIn)
+                .setExpiration(tokenExpiredTime)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        // Refresh Token 생성
         String refreshToken = Jwts.builder()
-                .setExpiration(new Date(now + 86400000))
+                .setExpiration(tokenExpiredTime)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        return TokenInfo.builder()
+        return TokenDTO.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

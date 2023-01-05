@@ -1,8 +1,9 @@
 package com.example.mini_project_b.login.service;
 
-import com.example.mini_project_b.login.domain.DTO.MemberLoginRequestDto;
-import com.example.mini_project_b.login.domain.DTO.TokenInfo;
-import com.example.mini_project_b.login.jwt.JwtTokenProvider;
+import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
+import com.example.mini_project_b.login.domain.DTO.LoginDTO;
+import com.example.mini_project_b.login.domain.DTO.TokenDTO;
+import com.example.mini_project_b.login.jwt.TokenProvider;
 import com.example.mini_project_b.login.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,21 +19,25 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Transactional
-    public TokenInfo login(MemberLoginRequestDto memberLoginRequestDto) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberLoginRequestDto.getMemberId(),memberLoginRequestDto.getPassword());
+    public TokenDTO login(String memberId, String password){
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-        return tokenInfo;
+
+        TokenDTO tokenDTO = tokenProvider.createToken(authentication);
+
+
+        return tokenDTO;
+    }
+    @Transactional
+    public void join(MemberJoinDto memberJoinDto) {
+        if(memberRepository.findByMemberId(memberJoinDto.getMemberId()).isPresent()) {
+            throw new IllegalStateException("이미 존재하는 아이디입니다.");
+        }
+        memberRepository.save(memberJoinDto.toEntity());
     }
 
-//    @Transactional
-//    public TokenInfo login(String memberId, String password) {
-//        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
-//        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-//        return tokenInfo;
-//    }
+
 }
