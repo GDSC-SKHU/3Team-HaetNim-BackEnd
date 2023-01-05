@@ -25,12 +25,11 @@ public class MemberService {
     public TokenDTO login(String memberId, String password){
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
         TokenDTO tokenDTO = tokenProvider.createToken(authentication);
-
-
         return tokenDTO;
     }
+
+
     @Transactional
     public void join(MemberJoinDto memberJoinDto) {
         if(memberRepository.findByMemberId(memberJoinDto.getMemberId()).isPresent()) {

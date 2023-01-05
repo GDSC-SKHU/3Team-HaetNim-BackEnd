@@ -26,9 +26,10 @@ public class PostService {
     private final TokenProvider tokenProvider;
 
 
+
+    // accessToken의 사용자와 {memberId}와 같다면 게시물 생성 가능
     @Transactional
     public PostDTO saveByPostId(Principal principal, String member_id, PostDTO dto){
-        System.out.println("@@@@@@@@@@@@@@@");
         if(!member_id.equals(principal.getName()))
 //            System.out.println(member_id+" "+principal.getName());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신의 블로그에만 등록이 가능합니다.");
@@ -76,8 +77,16 @@ public class PostService {
         return post.toDTO();
     }
 
+    // accessToken의 사용자와 {memberId}와 같다면 게시물 수정 가능
     @Transactional
-    public PostDTO updateById(Long id, PostDTO dto){
+    public PostDTO updateById(Principal principal, String member_id,Long id, PostDTO dto){
+
+        if(!member_id.equals(principal.getName()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신의 블로그에만 수정이 가능합니다.");
+
+        System.out.println("@@@@@@@@@@@@");
+        System.out.println(dto.getId());
+
         Post post = findEntityById(id);
 
         post.update(dto);

@@ -14,13 +14,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/post")
 public class PostController {
     private final PostService postService;
 
-    // 포스트 생성
-    @PostMapping("/{memberId}/add")
-    public ResponseEntity<String> save(
+
+    // {memberId}의 게시물을 생성 할 수 있도록 하는 POST api
+    @PostMapping("/@{memberId}/add")
+    public ResponseEntity<String> postSave(
             Principal principal,
             @PathVariable("memberId") String memberId,
             @RequestBody PostDTO request) {
@@ -30,13 +30,45 @@ public class PostController {
 
         // /api/members/id URI 생성
         return ResponseEntity.ok("post save success");
-
     }
 
-    @GetMapping("/{id}/posts")
+    // {memberId}의 게시물을 응답하는 GET api
+    @GetMapping("/@{memberId}/{postId}")
+    public ResponseEntity<PostDTO> findByPostId(
+            @PathVariable("memberId") String memberId,
+            @PathVariable("postId") Long postId
+    ){
+
+        System.out.println();
+        PostDTO response = postService.findById(postId);
+
+
+        return ResponseEntity
+                .ok(response);
+    }
+
+
+
+    // {memberId}의 게시물을 수정 할 수 있도록 하는 POST api
+    @PatchMapping("/@{memberId}/{postId}/update")
+    public ResponseEntity<String> postUpdate(
+            Principal principal,
+            @PathVariable("memberId") String memberId,
+            @PathVariable("postId") Long postId,
+            @RequestBody PostDTO request) {
+        PostDTO response = postService.updateById(principal, memberId, postId, request);
+
+        // /api/members/id URI 생성
+        return ResponseEntity.ok("post update success");
+    }
+
+
+
+    // {memberId}의 게시물을 응답해주는 GET api
+    @GetMapping("/@{memberId}")
     public ResponseEntity<List<PostDTO>> findAllByTeamId(
 //            String memberId
-            @PathVariable("id") String memberId
+            @PathVariable("memberId") String memberId
     ){
 
         List<PostDTO> responses = postService.findAllByMemberId(memberId);
@@ -51,22 +83,8 @@ public class PostController {
                 .ok(responses);
     }
 
-    @GetMapping("")
-    public ResponseEntity<List<PostDTO>> findAllId(
-    ){
-        System.out.println("@@@@@@@@@@@@@");
 
-        List<PostDTO> responses = postService.findAll();
 
-        if (responses.isEmpty()) {
-            return ResponseEntity
-                    .noContent()
-                    .build();
-        }
-
-        return ResponseEntity
-                .ok(responses);
-    }
 
 
 }
