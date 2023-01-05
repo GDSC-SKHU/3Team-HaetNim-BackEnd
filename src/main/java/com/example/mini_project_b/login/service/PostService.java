@@ -93,11 +93,14 @@ public class PostService {
     @Transactional
     public PostDTO updateById(Principal principal, String member_id,Long id, PostDTO dto){
 
+        Post post = findEntityById(id);
+        if(!member_id.equals(post.getMember().getMemberId()))
+//            System.out.println(member_id+" "+principal.getName());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,member_id+"는 이 게시글을 가지고 있지 않습니다.");
+
         if(!member_id.equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신의 블로그에만 수정이 가능합니다.");
 
-
-        Post post = findEntityById(id);
 
         post.update(dto);
 
@@ -108,12 +111,13 @@ public class PostService {
 
     @Transactional
     public void deleteById(Principal principal, String member_id, Long id){
-
+        Post post = findEntityById(id);
+        if(!member_id.equals(post.getMember().getMemberId()))
+//            System.out.println(member_id+" "+principal.getName());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,member_id+"는 이 게시글을 가지고 있지 않습니다.");
         if(!member_id.equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신의 블로그에만 수정이 가능합니다.");
 
-
-        Post post = findEntityById(id);
 
         postRepository.delete(post);
     }

@@ -30,11 +30,11 @@ public class PostController {
         List<PostDTO> responses = postService.findAllByMemberId(memberId);
         member.setPostDTOs(responses);
 
-        if (responses.isEmpty()) {
-            return ResponseEntity
-                    .noContent()
-                    .build();
-        }
+//        if (responses.isEmpty()) {
+//            return ResponseEntity
+//                    .noContent()
+//                    .build();
+//        }
 
         return ResponseEntity
                 .ok(member);

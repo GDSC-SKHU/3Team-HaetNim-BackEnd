@@ -54,7 +54,7 @@ public class Post extends BaseTimeEntity {
                 .createDate(createDate)
                 .lastModifiedDate(lastModifiedDate)
                 .memberJoinDto(MemberJoinDto.builder()
-//                        .memberId(member.getMemberId())
+                        .memberId(member.getMemberId())
                         .nickname(member.getNickname())
                         .statusMessage(member.getStatusMessage())
                         .profileImg(member.getProfileImg())
