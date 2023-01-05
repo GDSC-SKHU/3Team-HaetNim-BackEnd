@@ -51,8 +51,12 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostDTO> findAll(){
+    public List<PostDTO> findAllisDisclosure(){
         List<Post> posts = postRepository.findAll();
+
+        for(int i =0; i<posts.size();i++)
+            if(!posts.get(i).isDisclosure())
+                posts.remove(i);
 
         return posts.stream()
                 .map(Post::toDTO)
@@ -84,8 +88,6 @@ public class PostService {
         if(!member_id.equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신의 블로그에만 수정이 가능합니다.");
 
-        System.out.println("@@@@@@@@@@@@");
-        System.out.println(dto.getId());
 
         Post post = findEntityById(id);
 
@@ -97,7 +99,12 @@ public class PostService {
     }
 
     @Transactional
-    public void deleteById(Long id){
+    public void deleteById(Principal principal, String member_id, Long id){
+
+        if(!member_id.equals(principal.getName()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신의 블로그에만 수정이 가능합니다.");
+
+
         Post post = findEntityById(id);
 
         postRepository.delete(post);

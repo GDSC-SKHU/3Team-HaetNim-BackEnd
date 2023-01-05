@@ -17,19 +17,22 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
+    // {memberId}의 게시물을 모두 출력해주는 GET api
+    @GetMapping("/@{memberId}")
+    public ResponseEntity<List<PostDTO>> findAllByTeamId(
+            @PathVariable("memberId") String memberId
+    ){
 
-    // {memberId}의 게시물을 생성 할 수 있도록 하는 POST api
-    @PostMapping("/@{memberId}/add")
-    public ResponseEntity<String> postSave(
-            Principal principal,
-            @PathVariable("memberId") String memberId,
-            @RequestBody PostDTO request) {
+        List<PostDTO> responses = postService.findAllByMemberId(memberId);
 
+        if (responses.isEmpty()) {
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        }
 
-        PostDTO response = postService.saveByPostId(principal, memberId, request);
-
-        // /api/members/id URI 생성
-        return ResponseEntity.ok("post save success");
+        return ResponseEntity
+                .ok(responses);
     }
 
     // {memberId}의 게시물을 응답하는 GET api
@@ -48,6 +51,23 @@ public class PostController {
     }
 
 
+    // {memberId}의 게시물을 생성 할 수 있도록 하는 POST api
+    @PostMapping("/@{memberId}/add")
+    public ResponseEntity<String> postSave(
+            Principal principal,
+            @PathVariable("memberId") String memberId,
+            @RequestBody PostDTO request) {
+
+
+        PostDTO response = postService.saveByPostId(principal, memberId, request);
+
+        // /api/members/id URI 생성
+        return ResponseEntity.ok("post save success");
+    }
+
+
+
+
 
     // {memberId}의 게시물을 수정 할 수 있도록 하는 POST api
     @PatchMapping("/@{memberId}/{postId}/update")
@@ -63,28 +83,16 @@ public class PostController {
     }
 
 
+    // {memberId}의 게시물을 수정 할 수 있도록 하는 POST api
+    @DeleteMapping("/@{memberId}/{postId}/delete")
+    public ResponseEntity<String> postDelete(
+            Principal principal,
+            @PathVariable("memberId") String memberId,
+            @PathVariable("postId") Long postId) {
+        postService.deleteById(principal, memberId, postId);
 
-    // {memberId}의 게시물을 응답해주는 GET api
-    @GetMapping("/@{memberId}")
-    public ResponseEntity<List<PostDTO>> findAllByTeamId(
-//            String memberId
-            @PathVariable("memberId") String memberId
-    ){
-
-        List<PostDTO> responses = postService.findAllByMemberId(memberId);
-
-        if (responses.isEmpty()) {
-            return ResponseEntity
-                    .noContent()
-                    .build();
-        }
-
-        return ResponseEntity
-                .ok(responses);
+        // /api/members/id URI 생성
+        return ResponseEntity.ok("post Delete success");
     }
-
-
-
-
-
+    
 }

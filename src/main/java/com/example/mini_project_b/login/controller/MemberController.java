@@ -64,9 +64,9 @@ public class MemberController {
 
     // 메인화면에 출력될 수 있는 GET api
     @GetMapping("/main")
-    public ResponseEntity<List<PostDTO>> mainfindAll(
+    public ResponseEntity<List<PostDTO>> mainFindAll(
     ){
-        List<PostDTO> responses = postService.findAll();
+        List<PostDTO> responses = postService.findAllisDisclosure();
 
         if (responses.isEmpty()) {
             return ResponseEntity
