@@ -22,10 +22,13 @@ import java.util.stream.Collectors;
 @Entity
 public class Member implements UserDetails {
 
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "id", nullable = false)
+    private Long Id;
+
+    @Column(name = "member_id", nullable = false)
     private String memberId;
+
 
     @Column(name = "password", nullable = false, length = 100)
     private String password;
@@ -36,7 +39,7 @@ public class Member implements UserDetails {
     @Column(name="nickname",nullable = false,length = 100)
     private String nickname;
 
-    @Column(name="statusMessage",nullable = false,length = 100)
+    @Column(name="statusMessage",nullable = true,length = 100)
     private String statusMessage;
 
     @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
