@@ -77,8 +77,11 @@ public class PostService {
 
 
     @Transactional(readOnly = true)
-    public PostDTO findById(Long id){
+    public PostDTO findByMemberId(String member_id, Long id){
         Post post = findEntityById(id);
+        if(!member_id.equals(post.getMember().getMemberId()))
+//            System.out.println(member_id+" "+principal.getName());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,member_id+"는 이 게시글을 가지고 있지 않습니다.");
 
         return post.toDTO();
     }

@@ -42,7 +42,7 @@ public class PostController {
             @PathVariable("postId") Long postId
     ){
 
-        PostDTO response = postService.findById(postId);
+        PostDTO response = postService.findByMemberId(memberId,postId);
 
 
         return ResponseEntity
