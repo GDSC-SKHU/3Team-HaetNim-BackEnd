@@ -36,11 +36,15 @@ public class Member implements UserDetails {
     @Column(name="profileImg", nullable = true,length = 200)
     private String profileImg;
 
-    @Column(name="nickname",nullable = false,length = 100)
-    private String nickname;
-
     @Column(name="statusMessage",nullable = true,length = 100)
     private String statusMessage;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
+    @Column(name="nickname",nullable = false,length = 100)
+    private String nickname;
 
     @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Follow> followerList;
@@ -55,9 +59,7 @@ public class Member implements UserDetails {
 //    @Enumerated(EnumType.STRING)
 //    private Role role;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,6 +67,7 @@ public class Member implements UserDetails {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
+
     @Override
     public String getUsername() {
         return memberId;

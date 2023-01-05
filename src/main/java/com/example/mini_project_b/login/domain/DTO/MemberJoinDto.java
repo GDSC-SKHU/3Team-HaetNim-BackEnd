@@ -3,7 +3,11 @@ package com.example.mini_project_b.login.domain.DTO;
 
 import com.example.mini_project_b.login.domain.Member;
 
+import com.example.mini_project_b.login.domain.Role;
 import lombok.Data;
+
+import java.util.Collections;
+import java.util.List;
 
 @Data
 public class MemberJoinDto {
@@ -22,6 +26,9 @@ public class MemberJoinDto {
                 .nickname(nickname)
                 .statusMessage(statusMessage)
                 .profileImg(profileImg)
+                .roles(Collections.singletonList("USER"))
                 .build();
     }
+
+
 }

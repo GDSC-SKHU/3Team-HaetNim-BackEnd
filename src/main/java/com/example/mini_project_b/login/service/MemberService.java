@@ -35,6 +35,7 @@ public class MemberService {
         if(memberRepository.findByMemberId(memberJoinDto.getMemberId()).isPresent()) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
+
         memberRepository.save(memberJoinDto.toEntity());
     }
 

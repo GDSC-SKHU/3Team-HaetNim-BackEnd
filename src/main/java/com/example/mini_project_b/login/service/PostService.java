@@ -74,6 +74,8 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+
+
     @Transactional(readOnly = true)
     public PostDTO findById(Long id){
         Post post = findEntityById(id);

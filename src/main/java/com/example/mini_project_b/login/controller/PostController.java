@@ -42,7 +42,6 @@ public class PostController {
             @PathVariable("postId") Long postId
     ){
 
-        System.out.println();
         PostDTO response = postService.findById(postId);
 
 
@@ -69,7 +68,7 @@ public class PostController {
 
 
 
-    // {memberId}의 게시물을 수정 할 수 있도록 하는 POST api
+    // {memberId}의 게시물을 수정 할 수 있도록 하는 PATCH api
     @PatchMapping("/@{memberId}/{postId}/update")
     public ResponseEntity<String> postUpdate(
             Principal principal,
@@ -83,7 +82,7 @@ public class PostController {
     }
 
 
-    // {memberId}의 게시물을 수정 할 수 있도록 하는 POST api
+    // {memberId}의 게시물을 삭제 할 수 있도록 하는 DELETE api
     @DeleteMapping("/@{memberId}/{postId}/delete")
     public ResponseEntity<String> postDelete(
             Principal principal,
