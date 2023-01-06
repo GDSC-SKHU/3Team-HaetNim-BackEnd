@@ -17,34 +17,28 @@ public class MemberController {
 
     @GetMapping("/admin")
     public ResponseEntity<String> admin() {
-        return ResponseEntity.ok("admin");
+        return ResponseEntity.ok("admin page");
     }
 
     @GetMapping("/user")
     public ResponseEntity<String> user() {
-        return ResponseEntity.ok("user");
+        return ResponseEntity.ok("user page");
     }
 
     @PostMapping("/login")
-    public TokenDTO login(@RequestBody LoginDTO memberLoginRequestDTO) {
-        String memberID = memberLoginRequestDTO.getMemberId();
-        String password = memberLoginRequestDTO.getPassword();
-        TokenDTO tokenDTO = memberService.login(memberID, password);
-        return tokenDTO;
+    public TokenDTO login(@RequestBody LoginDTO loginRequestDTO)
+    {
+        return memberService.login(loginRequestDTO);
     }
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody MemberJoinDto memberJoinDto) {
         memberService.join(memberJoinDto);
-        return ResponseEntity.ok("가입성공");
+        return ResponseEntity.ok("회원가입 성공");
     }
 
+    //test용
     @GetMapping("/index")
     public ResponseEntity<String> index() {
         return ResponseEntity.ok("index");
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "success";
     }
 }

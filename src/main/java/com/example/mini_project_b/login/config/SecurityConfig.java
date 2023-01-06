@@ -14,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity //@EnableWebSecurity : 기본적인 Web 보안을 활성화
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/index", "/login","/join").permitAll()
-                .antMatchers("/user").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/user","/api/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -38,7 +38,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 

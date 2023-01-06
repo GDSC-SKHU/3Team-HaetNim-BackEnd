@@ -24,4 +24,10 @@ public class PostLike {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Builder
+    public PostLike(Member member, Post post) {
+        this.member = member;
+        this.post = post;
+    }
 }

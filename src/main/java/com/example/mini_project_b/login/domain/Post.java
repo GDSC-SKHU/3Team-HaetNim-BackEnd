@@ -25,6 +25,9 @@ public class Post extends BaseTimeEntity {
     @Column(name = "title", nullable = false, length = 150)
     private String title;
 
+    // 게시글 촤초 등록 시 0으로 초기화되게끔
+    @Column(name = "heartCount")
+    private Integer heartCount = 0;
     @Column(name = "content", nullable = false)
     private String content;
 
@@ -52,9 +55,8 @@ public class Post extends BaseTimeEntity {
                 .disclosure(disclosure)
                 .build();
     }
-
-
-
-
-
+    public int addHeartCount(){
+         return ++heartCount;
+    }
+    public int deleteHeartCount(){return --heartCount;}
 }

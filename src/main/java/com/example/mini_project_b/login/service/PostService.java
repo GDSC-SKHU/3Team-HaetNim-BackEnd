@@ -49,7 +49,4 @@ public class PostService {
                 .map(Post::toDTO)
                 .collect(Collectors.toList());
     }
-
-
-
 }

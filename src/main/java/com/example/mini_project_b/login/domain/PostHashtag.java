@@ -17,7 +17,7 @@ import javax.persistence.*;
 public class PostHashtag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "posthashtag_id", nullable = false)
+    @Column(name = "post_hashtag_id", nullable = false)
     private Long id;
 
     @ManyToOne
