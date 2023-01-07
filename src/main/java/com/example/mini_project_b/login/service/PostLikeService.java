@@ -38,6 +38,7 @@ public class PostLikeService {
                 for (PostLike pl : postLikes)
                     if (p.getId() == pl.getPost().getId())
                         p.setPostLike(true);
+
             }
         }
 

@@ -1,17 +1,16 @@
 package com.example.mini_project_b.login.repository;
 
-
 import com.example.mini_project_b.login.domain.Hashtag;
+import com.example.mini_project_b.login.domain.PostHashtag;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface HashTagRepository extends JpaRepository<Hashtag, Long> {
+public interface PostHashTagRepository extends JpaRepository<PostHashtag, Long> {
+    List<PostHashtag> findByPostId(Long postId);
 
-    Optional<Hashtag> findHashTagByTag(String tag);
-    //void deleteByPostsId(Long postId);
+    List<PostHashtag> findByHashtag_Id(Long hashtagId);
 
 }

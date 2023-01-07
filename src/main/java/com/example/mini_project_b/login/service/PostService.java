@@ -4,9 +4,11 @@ import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import com.example.mini_project_b.login.domain.Member;
 import com.example.mini_project_b.login.domain.Post;
+import com.example.mini_project_b.login.domain.PostHashtag;
 import com.example.mini_project_b.login.domain.PostLike;
 import com.example.mini_project_b.login.jwt.TokenProvider;
 import com.example.mini_project_b.login.repository.MemberRepository;
+import com.example.mini_project_b.login.repository.PostHashTagRepository;
 import com.example.mini_project_b.login.repository.PostLikeRepository;
 import com.example.mini_project_b.login.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,9 @@ public class PostService {
     private final MemberRepository memberRepository;
 
     private final PostLikeService postLikeService;
+
+    private final PostHashtagService postHashtagService;
+
 
 
     // accessToken의 사용자와 {memberId}와 같다면 게시물 생성 가능
@@ -58,9 +63,11 @@ public class PostService {
 
 
 
-        for(int i =0; i<posts.size();i++)
+        for(int i =0; i<posts.size();i++) {
             if (!posts.get(i).isDisclosure())
                 posts.remove(i);
+
+        }
 
 
         return posts.stream()
@@ -74,11 +81,14 @@ public class PostService {
 
         List<Post> posts = postRepository.findAllByMember(member);
 
-        List<PostDTO> postDTOs =postLikeService.findAllPostLike(
-                    principal,
-                    posts.stream()
-                    .map(Post::toDTO)
-                    .collect(Collectors.toList())
+        List<PostDTO> postDTOs =
+                postHashtagService.findAllHashtags(
+                    postLikeService.findAllPostLike(
+                        principal,
+                        posts.stream()
+                        .map(Post::toDTO)
+                        .collect(Collectors.toList())
+                    )
                 );
 
         return postDTOs;
@@ -93,7 +103,10 @@ public class PostService {
 //            System.out.println(member_id+" "+principal.getName());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,member_id+"는 이 게시글을 가지고 있지 않습니다.");
 
-        PostDTO postDTO = postLikeService.findByPostLike(principal,post.toDTO());
+        PostDTO postDTO =
+                postHashtagService.findByHashtags(
+                    postLikeService.findByPostLike(principal,post.toDTO())
+                );
 
         return postDTO;
     }

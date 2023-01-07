@@ -5,6 +5,7 @@ import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import com.example.mini_project_b.login.domain.DTO.TokenDTO;
 import com.example.mini_project_b.login.service.MemberService;
+import com.example.mini_project_b.login.service.PostHashtagService;
 import com.example.mini_project_b.login.service.PostLikeService;
 import com.example.mini_project_b.login.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,8 @@ public class MemberController {
     private final PostService postService;
 
     private final PostLikeService postLikeService;
+
+    private final PostHashtagService postHashtagService;
 
 
     // ---- User와 Admin 권한을 가진 사용자를 확인하기 위한 임시 api ----
@@ -69,10 +72,13 @@ public class MemberController {
     public ResponseEntity<List<PostDTO>> mainFindAll(
             Principal principal
     ){
-        List<PostDTO> responses = postLikeService.findAllPostLike(
-                principal,
-                postService.findAllisDisclosure()
-        );
+        List<PostDTO> responses =
+            postHashtagService.findAllHashtags(
+                postLikeService.findAllPostLike(
+                        principal,
+                        postService.findAllisDisclosure()
+                )
+            );
 
         if (responses.isEmpty()) {
             return ResponseEntity
