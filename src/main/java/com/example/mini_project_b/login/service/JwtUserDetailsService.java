@@ -30,7 +30,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     private UserDetails createUserDetails(Member member){
         return User.builder()
                 .username(member.getUsername())
-                .password(member.getPassword())
+//                .password(member.getPassword())
+                .password(member.getUsername().equals("member_B")?passwordEncoder.encode(member.getPassword()):member.getPassword())
                 .roles(member.getRoles().toArray(new String[0]))
                 .build();
     }
