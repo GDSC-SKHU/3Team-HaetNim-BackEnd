@@ -1,4 +1,6 @@
 package com.example.mini_project_b.login.domain;
+
+
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -12,10 +14,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @EntityListeners(AuditingEntityListener.class)
+
 @MappedSuperclass
 public class BaseTimeEntity {
-
-
     @CreatedDate
     @Column(updatable = false)
     protected LocalDateTime createDate;

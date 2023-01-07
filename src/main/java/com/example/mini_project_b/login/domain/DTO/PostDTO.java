@@ -1,14 +1,14 @@
 package com.example.mini_project_b.login.domain.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.example.mini_project_b.login.domain.Member;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
+@Data
 @Getter
 @Builder
 @NoArgsConstructor
@@ -28,4 +28,10 @@ public class PostDTO {
 
     @NotBlank
     private boolean disclosure;
+
+    private LocalDateTime createDate;
+
+    private LocalDateTime lastModifiedDate;
+
+    private MemberJoinDto memberJoinDto;
 }
