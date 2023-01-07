@@ -1,12 +1,9 @@
 package com.example.mini_project_b.login.controller;
 
 
-import com.example.mini_project_b.login.domain.DTO.HeartResponseDto;
-import com.example.mini_project_b.login.domain.Member;
-import com.example.mini_project_b.login.service.HeartService;
+import com.example.mini_project_b.login.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -14,8 +11,8 @@ import java.security.Principal;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
-public class HeartController {
-    private final HeartService heartService;
+public class PostLikeController {
+    private final PostLikeService postLikeService;
 
     // 조회 [Get] 요청받는 DTO 없음. 반환할 DTO 있음
 
@@ -30,19 +27,19 @@ public class HeartController {
             @PathVariable Long postId,
             Principal principal
     ) {
-        int heartCount = heartService.saveLikes(postId, principal);
-        HeartResponseDto heartResponseDto = new HeartResponseDto(heartCount);
+       postLikeService.saveLikes(postId, principal);
+
         return ResponseEntity.ok("좋아요 등록 완료");
     }
 
     //하트 카운트 1감소
     @DeleteMapping("/{postId}/delete")
-    public ResponseEntity<HeartResponseDto> remove(
+    public ResponseEntity<String> remove(
             @PathVariable Long postId,
-            @AuthenticationPrincipal Member userDetails
+            Principal principal
     ) {
-        int heartCount = heartService.deleteLikes(postId, userDetails);
-        HeartResponseDto heartResponseDto = new HeartResponseDto(heartCount);
-        return ResponseEntity.ok(heartResponseDto);
+        postLikeService.deleteLikes(postId, principal);
+
+        return ResponseEntity.ok("좋아요 삭제 완료");
     }
 }

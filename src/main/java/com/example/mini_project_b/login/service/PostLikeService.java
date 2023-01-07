@@ -6,6 +6,7 @@ import com.example.mini_project_b.login.domain.Post;
 import com.example.mini_project_b.login.domain.PostLike;
 import com.example.mini_project_b.login.repository.MemberRepository;
 import com.example.mini_project_b.login.repository.PostLikeRepository;
+import com.example.mini_project_b.login.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,11 @@ import java.util.List;
 public class PostLikeService {
 
     private final MemberRepository memberRepository;
+    private final PostRepository postRepository;
+
     private final PostLikeRepository postLikeRepository;
+
+
     @Transactional(readOnly = true)
     public List<PostDTO> findByPostLike(Principal principal,List<PostDTO> dto){
         if(principal != null) {
@@ -37,5 +42,59 @@ public class PostLikeService {
         }
 
         return dto;
+    }
+
+
+    @Transactional
+    public void saveLikes(Long postId, Principal principal) {
+
+        Post post = postRepository.findById(postId).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 게시글은 존재하지 않습니다.");
+        });
+
+        Member member = memberRepository.findByMemberId(principal.getName()).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 사용자는 존재하지 않습니다.");
+        });
+
+        List<PostLike> postLikes = postLikeRepository.findByPostId(postId);
+
+
+
+        for(PostLike p : postLikes)
+            if(p.getMember().getId() == member.getId())
+                throw new IllegalArgumentException("이미 좋아요를 누르셨습니다.");
+
+        PostLike postLike = PostLike.builder()
+                .post(post)
+                .member(member)
+                .build();
+
+        postLikeRepository.save(postLike);
+//        return post.addHeartCount();
+    }
+
+    @Transactional
+    public void deleteLikes(Long postId, Principal principal) {
+
+        Post post = postRepository.findById(postId).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 게시글은 존재하지 않습니다.");
+        });
+
+        Member member = memberRepository.findByMemberId(principal.getName()).orElseThrow(() -> {
+            throw new IllegalArgumentException("해당 사용자는 존재하지 않습니다.");
+        });
+
+        List<PostLike> postLikes = postLikeRepository.findByPostId(postId);
+
+        for(PostLike p : postLikes){
+            if(p.getMember().getId() == member.getId()) {
+                postLikeRepository.delete(p);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("좋아요를 누르지 않으셨습니다.");
+        
+
+//        return post.deleteHeartCount();
     }
 }
