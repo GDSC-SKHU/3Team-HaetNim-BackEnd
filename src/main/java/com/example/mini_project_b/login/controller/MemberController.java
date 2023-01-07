@@ -4,17 +4,18 @@ import com.example.mini_project_b.login.domain.DTO.LoginDTO;
 import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import com.example.mini_project_b.login.domain.DTO.TokenDTO;
-import com.example.mini_project_b.login.service.MemberService;
-import com.example.mini_project_b.login.service.PostHashtagService;
-import com.example.mini_project_b.login.service.PostLikeService;
-import com.example.mini_project_b.login.service.PostService;
+import com.example.mini_project_b.login.domain.Hashtag;
+import com.example.mini_project_b.login.domain.Post;
+import com.example.mini_project_b.login.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -23,9 +24,8 @@ public class MemberController {
     private final MemberService memberService;
     private final PostService postService;
 
-    private final PostLikeService postLikeService;
 
-    private final PostHashtagService postHashtagService;
+    private final HashtagService hashtagService;
 
 
     // ---- User와 Admin 권한을 가진 사용자를 확인하기 위한 임시 api ----
@@ -72,13 +72,8 @@ public class MemberController {
     public ResponseEntity<List<PostDTO>> mainFindAll(
             Principal principal
     ){
-        List<PostDTO> responses =
-            postHashtagService.findAllHashtags(
-                postLikeService.findAllPostLike(
-                        principal,
-                        postService.findAllisDisclosure()
-                )
-            );
+        List<PostDTO> responses = postService.findAllisDisclosure(principal);
+
 
         if (responses.isEmpty()) {
             return ResponseEntity
@@ -124,5 +119,27 @@ public class MemberController {
 
         return ResponseEntity
                 .ok(response);
+    }
+
+    @GetMapping("/hashtag")
+    public ResponseEntity<List<Hashtag>> getAllHashTags() {
+        return ResponseEntity.ok(hashtagService.getAllHashTags());
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<List<PostDTO>> findByHashTags(
+            Principal principal,
+            @RequestParam(value="hashtag") List<String> hashtag
+    ) {
+        System.out.println("해시테그~~~ " + hashtag.toString());
+        List<PostDTO> responses = postService.findAllisDisclosure(principal)
+                .stream()
+                .filter(h -> h.getHashTags().containsAll(hashtag))
+                .collect(Collectors.toList());
+
+        for(PostDTO tt : responses)
+            System.out.println("@@@@@@@@@@@+ "+ tt.getId());
+
+        return ResponseEntity.ok(responses);
     }
 }

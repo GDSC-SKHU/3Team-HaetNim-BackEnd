@@ -87,7 +87,9 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostDTO> findAllisDisclosure(){
+    public List<PostDTO> findAllisDisclosure(
+            Principal principal
+    ){
         List<Post> posts = postRepository.findAll();
 
         for(int i =0; i<posts.size();i++) {
@@ -95,9 +97,17 @@ public class PostService {
                 posts.remove(i);
         }
 
-        return posts.stream()
-                .map(Post::toDTO)
-                .collect(Collectors.toList());
+        List<PostDTO> postDTOs = postHashtagService.findAllHashtags(
+                postLikeService.findAllPostLike(
+                        principal,
+                        posts.stream()
+                                .map(Post::toDTO)
+                                .collect(Collectors.toList())
+                )
+        );
+
+
+        return postDTOs;
     }
 
     @Transactional(readOnly = true)
@@ -106,18 +116,22 @@ public class PostService {
 
         List<Post> posts = postRepository.findAllByMember(member);
 
-        List<PostDTO> postDTOs =
-                postHashtagService.findAllHashtags(
-                    postLikeService.findAllPostLike(
-                        principal,
-                        posts.stream()
-                        .map(Post::toDTO)
-                        .collect(Collectors.toList())
-                    )
-                );
-
-        return postDTOs;
+        return addHashTagLike(
+                principal,
+                posts.stream()
+                .map(Post::toDTO)
+                .collect(Collectors.toList())
+        );
     }
+    public List<PostDTO> addHashTagLike(Principal principal,List<PostDTO> posts){
+        return postHashtagService.findAllHashtags(
+                postLikeService.findAllPostLike(
+                        principal,
+                        posts
+                )
+        );
+    }
+
 
 
 

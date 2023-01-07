@@ -23,7 +23,7 @@ public class PostHashtagService {
     @Transactional(readOnly = true)
     public List<PostDTO> findAllHashtags(List<PostDTO> dto){
         for (PostDTO p : dto) {
-            System.out.println("@@@@@@@@@@@+ "+p.getId());
+            // System.out.println("@@@@@@@@@@@+ "+p.getId());
             List<PostHashtag> postHashtags = postHashTagRepository.findByPostId(p.getId());
 
             List<String> hashtags=new ArrayList<>();
