@@ -64,9 +64,6 @@ public class MemberController {
         return ResponseEntity.ok("회원가입 성공");
     }
 
-
-
-
     // 메인화면에 출력될 수 있는 GET api
     @GetMapping("/main")
     public ResponseEntity<List<PostDTO>> mainFindAll(
@@ -85,5 +82,41 @@ public class MemberController {
 
         return ResponseEntity
                 .ok(responses);
+    }
+
+    // {memberId}의 프로필과 게시물을 모두 출력해주는 GET api
+    @GetMapping("/@{memberId}")
+    public ResponseEntity<MemberJoinDto> findAllByTeamId(
+            Principal principal,
+            @PathVariable("memberId") String memberId
+    ){
+        MemberJoinDto member = memberService.findByUserPostId(memberId);
+
+        List<PostDTO> responses = postService.findAllByMemberId(principal, memberId);
+
+
+        member.setPostDTOs(responses);
+
+//        if (responses.isEmpty()) {
+//            return ResponseEntity
+//                    .noContent()
+//                    .build();
+//        }
+
+        return ResponseEntity
+                .ok(member);
+    }
+
+    // {memberId}의 게시물을 응답하는 GET api
+    @GetMapping("/@{memberId}/{postId}")
+    public ResponseEntity<PostDTO> findByPostId(
+            Principal principal,
+            @PathVariable("memberId") String memberId,
+            @PathVariable("postId") Long postId
+    ) {
+        PostDTO response = postService.findByMemberId(principal, memberId,postId);
+
+        return ResponseEntity
+                .ok(response);
     }
 }

@@ -34,9 +34,7 @@ public class MemberService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDTO.getMemberId(), loginRequestDTO.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        // return tokenProvider.createToken(authentication);
-        TokenDTO tokenDTO = tokenProvider.createToken(authentication);
-        return tokenDTO;
+        return tokenProvider.createToken(authentication);
     }
 
 
@@ -45,6 +43,7 @@ public class MemberService {
         if(memberRepository.findByMemberId(memberJoinDto.getMemberId()).isPresent()) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
+
         memberJoinDto.setPassword(passwordEncoder.encode(memberJoinDto.getPassword()));
         memberRepository.save(memberJoinDto.toEntity());
     }

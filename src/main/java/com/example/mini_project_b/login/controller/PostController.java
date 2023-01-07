@@ -17,50 +17,10 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class PostController {
     private final PostService postService;
     private final MemberService memberService;
-
-    private final PostLikeService postLikeService;
-
-    // {memberId}의 프로필과 게시물을 모두 출력해주는 GET api
-    @GetMapping("/@{memberId}")
-    public ResponseEntity<MemberJoinDto> findAllByTeamId(
-            Principal principal,
-            @PathVariable("memberId") String memberId
-    ){
-        MemberJoinDto member = memberService.findByUserPostId(memberId);
-
-        List<PostDTO> responses = postService.findAllByMemberId(principal, memberId);
-
-
-        member.setPostDTOs(responses);
-
-//        if (responses.isEmpty()) {
-//            return ResponseEntity
-//                    .noContent()
-//                    .build();
-//        }
-
-        return ResponseEntity
-                .ok(member);
-    }
-
-
-    // {memberId}의 게시물을 응답하는 GET api
-    @GetMapping("/@{memberId}/{postId}")
-    public ResponseEntity<PostDTO> findByPostId(
-            Principal principal,
-            @PathVariable("memberId") String memberId,
-            @PathVariable("postId") Long postId
-    ) {
-        PostDTO response = postService.findByMemberId(principal, memberId,postId);
-
-        return ResponseEntity
-                .ok(response);
-    }
-
-
 
     // {memberId}의 프로필을 수정할 수 있도록 하는 PATCH api
     @PatchMapping("/@{memberId}/update")
@@ -72,14 +32,6 @@ public class PostController {
         memberService.profileUpdate(principal, memberId, memberJoinDto);
         return ResponseEntity.ok(memberId+" 수정 성공");
     }
-
-
-
-
-
-
-
-
 
     // {memberId}의 게시물을 생성 할 수 있도록 하는 POST api
     @PostMapping("/@{memberId}/add")
@@ -94,10 +46,6 @@ public class PostController {
         // /api/members/id URI 생성
         return ResponseEntity.ok("post save success");
     }
-
-
-
-
 
     // {memberId}의 게시물을 수정 할 수 있도록 하는 PATCH api
     @PatchMapping("/@{memberId}/{postId}/update")
