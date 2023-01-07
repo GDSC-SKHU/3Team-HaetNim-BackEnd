@@ -1,11 +1,8 @@
 package com.example.mini_project_b.login.service;
 
+import com.example.mini_project_b.login.domain.*;
 import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import com.example.mini_project_b.login.domain.DTO.PostDTO;
-import com.example.mini_project_b.login.domain.Member;
-import com.example.mini_project_b.login.domain.Post;
-import com.example.mini_project_b.login.domain.PostHashtag;
-import com.example.mini_project_b.login.domain.PostLike;
 import com.example.mini_project_b.login.jwt.TokenProvider;
 import com.example.mini_project_b.login.repository.MemberRepository;
 import com.example.mini_project_b.login.repository.PostHashTagRepository;
@@ -32,7 +29,9 @@ public class PostService {
 
     private final PostHashtagService postHashtagService;
 
+    private final HashtagService hashtagService;
 
+    private final PostHashTagRepository postHashTagRepository;
 
     // accessToken의 사용자와 {memberId}와 같다면 게시물 생성 가능
     @Transactional
@@ -46,29 +45,55 @@ public class PostService {
         System.out.println(member);
         System.out.println(dto.getContent());
 
-        Post post = Post.builder()
-                .title(dto.getTitle())
-                .content(dto.getContent())
-                .img(dto.getImg())
-                .disclosure(dto.isDisclosure())
-                .member(member)
-                .build();
+        Post post = postRepository.save(
+                Post.builder()
+                        .title(dto.getTitle())
+                        .content(dto.getContent())
+                        .img(dto.getImg())
+                        .disclosure(dto.isDisclosure())
+                        .member(member)
+                        .build()
+        );
 
-        return postRepository.save(post);
+        if(dto.getHashTags().size() != 0) {
+            List<Hashtag> hashtags = new ArrayList<>();
+
+            // 해시테그 비존재 시 저장
+            for (String tag : dto.getHashTags()) {
+//                System.out.println("!@#$!!$@#$!$!$!   " + hashtagService.findHashTagByTag(tag));
+                hashtags.add(
+                        hashtagService.findHashTagByTag(tag) != null ?
+                                hashtagService.findHashTagByTag(tag) :
+                                hashtagService.saveHashTag(
+                                        Hashtag.builder()
+                                                .tag(tag)
+                                                .build()
+                                )
+                );
+            }
+
+            // PostHashTag 저장
+            for(Hashtag h : hashtags)
+                postHashTagRepository.save(
+                        PostHashtag.builder()
+                                .hashtag(h)
+                                .post(post)
+                                .build()
+                );
+        }
+
+
+        return post;
     }
 
     @Transactional(readOnly = true)
     public List<PostDTO> findAllisDisclosure(){
         List<Post> posts = postRepository.findAll();
 
-
-
         for(int i =0; i<posts.size();i++) {
             if (!posts.get(i).isDisclosure())
                 posts.remove(i);
-
         }
-
 
         return posts.stream()
                 .map(Post::toDTO)
@@ -124,6 +149,36 @@ public class PostService {
 
         if(!member_id.equals(principal.getName()))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신의 블로그에만 수정이 가능합니다.");
+
+        List<Hashtag> hashtags = new ArrayList<>();
+
+        // PostId와 관련된 PostHashTag 전부 삭제
+        postHashTagRepository.deletePostHashtagByPost(post);
+
+        // 해시테그 비존재 시 저장
+        for (String tag : dto.getHashTags()) {
+//                System.out.println("!@#$!!$@#$!$!$!   " + hashtagService.findHashTagByTag(tag));
+            hashtags.add(
+                    hashtagService.findHashTagByTag(tag) != null ?
+                            hashtagService.findHashTagByTag(tag) :
+                            hashtagService.saveHashTag(
+                                    Hashtag.builder()
+                                            .tag(tag)
+                                            .build()
+                            )
+            );
+        }
+
+        // PostHashTag 저장
+        for(Hashtag h : hashtags)
+            postHashTagRepository.save(
+                    PostHashtag.builder()
+                            .hashtag(h)
+                            .post(post)
+                            .build()
+            );
+
+
 
 
         post.update(dto);

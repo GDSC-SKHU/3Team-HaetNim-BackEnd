@@ -6,10 +6,12 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
+@Builder
 @Table(name = "hashtag")
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Hashtag {
 
     @Id
@@ -26,4 +28,4 @@ public class Hashtag {
 //    @OneToMany(mappedBy = "hashtags", fetch=FetchType.LAZY, cascade= {CascadeType.ALL})
 //    @JoinTable(name="post_hashtag", joinColumns=@JoinColumn(name="hashtag_id"), inverseJoinColumns=@JoinColumn(name="post_id"))
 //    private List<PostHashtag> postHashtags = new ArrayList<PostHashtag>();
-    }
+}

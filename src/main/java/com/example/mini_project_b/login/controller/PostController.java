@@ -38,8 +38,9 @@ public class PostController {
     public ResponseEntity<String> postSave(
             Principal principal,
             @PathVariable("memberId") String memberId,
-            @RequestBody PostDTO request) {
-
+            @RequestBody PostDTO request
+    ) {
+        System.out.println("@@@@@@@@@@+ "+ request.getHashTags());
 
         Post response = postService.saveByPostId(principal, memberId, request);
 
@@ -53,7 +54,9 @@ public class PostController {
             Principal principal,
             @PathVariable("memberId") String memberId,
             @PathVariable("postId") Long postId,
-            @RequestBody PostDTO request) {
+            @RequestBody PostDTO request
+    ) {
+
         PostDTO response = postService.updateById(principal, memberId, postId, request);
 
         // /api/members/id URI 생성

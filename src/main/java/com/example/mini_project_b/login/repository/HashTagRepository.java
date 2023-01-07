@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface HashTagRepository extends JpaRepository<Hashtag, Long> {
 
-    Optional<Hashtag> findHashTagByTag(String tag);
+    Hashtag findHashTagByTag(String tag);
     //void deleteByPostsId(Long postId);
 
 }

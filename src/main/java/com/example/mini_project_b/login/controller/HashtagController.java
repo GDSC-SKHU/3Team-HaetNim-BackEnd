@@ -26,7 +26,7 @@ public class HashtagController {
     }
 
     @PostMapping("/post")
-    public ResponseEntity<?> saveHashTag(@RequestBody @Valid Hashtag hashtag) {
+    public Hashtag saveHashTag(@RequestBody @Valid Hashtag hashtag) {
         return hashtagService.saveHashTag(hashtag);
     }
     @DeleteMapping("/delete/{id}")

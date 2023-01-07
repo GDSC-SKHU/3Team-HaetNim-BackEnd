@@ -29,9 +29,8 @@ public class HashtagService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> saveHashTag(Hashtag hashTag) {
-        return new ResponseEntity<>(hashTagRepository.save(hashTag),
-                HttpStatus.CREATED);
+    public Hashtag saveHashTag(Hashtag hashTag) {
+        return hashTagRepository.save(hashTag);
     }
 
     public ResponseEntity<?> deleteHashTag(Long id) {
@@ -57,7 +56,7 @@ public class HashtagService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    public Optional<Hashtag> findHashTagByTag(String tag) {
+    public Hashtag findHashTagByTag(String tag) {
         return hashTagRepository.findHashTagByTag(tag);
     }
 

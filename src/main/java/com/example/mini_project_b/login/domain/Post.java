@@ -46,7 +46,8 @@ public class Post extends BaseTimeEntity {
     private List<PostLike> postLikes =new ArrayList<>();
 
 
-
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<PostHashtag> postHashtags =new ArrayList<>();
 
 //    @OneToMany(mappedBy = "posts", fetch=FetchType.LAZY, cascade={CascadeType.ALL})
 //    @JoinTable(name="post_hashtag", joinColumns=@JoinColumn(name="post_id"), inverseJoinColumns=@JoinColumn(name="hashtag_id"))
