@@ -3,6 +3,7 @@ package com.example.mini_project_b.login.controller;
 import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import com.example.mini_project_b.login.domain.Member;
+import com.example.mini_project_b.login.domain.Post;
 import com.example.mini_project_b.login.service.MemberService;
 import com.example.mini_project_b.login.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -87,7 +88,7 @@ public class PostController {
             @RequestBody PostDTO request) {
 
 
-        PostDTO response = postService.saveByPostId(principal, memberId, request);
+        Post response = postService.saveByPostId(principal, memberId, request);
 
         // /api/members/id URI 생성
         return ResponseEntity.ok("post save success");

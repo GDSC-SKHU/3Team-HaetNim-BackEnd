@@ -29,7 +29,7 @@ public class PostService {
 
     // accessToken의 사용자와 {memberId}와 같다면 게시물 생성 가능
     @Transactional
-    public PostDTO saveByPostId(Principal principal, String member_id, PostDTO dto){
+    public Post saveByPostId(Principal principal, String member_id, PostDTO dto){
         if(!member_id.equals(principal.getName()))
 //            System.out.println(member_id+" "+principal.getName());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신의 블로그에만 등록이 가능합니다.");
@@ -47,7 +47,7 @@ public class PostService {
                 .member(member)
                 .build();
 
-        return postRepository.save(post).toDTO();
+        return postRepository.save(post);
     }
 
     @Transactional(readOnly = true)

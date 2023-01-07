@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/post")
@@ -24,13 +26,13 @@ public class HeartController {
 
     //하트 카운트 1증가
     @PostMapping("/{postId}/like")
-    public ResponseEntity<HeartResponseDto> like(
+    public ResponseEntity<String> like(
             @PathVariable Long postId,
-            @AuthenticationPrincipal Member userDetails
+            Principal principal
     ) {
-        int heartCount = heartService.saveLikes(postId, userDetails);
+        int heartCount = heartService.saveLikes(postId, principal);
         HeartResponseDto heartResponseDto = new HeartResponseDto(heartCount);
-        return ResponseEntity.ok(heartResponseDto);
+        return ResponseEntity.ok("좋아요 등록 완료");
     }
 
     //하트 카운트 1감소
