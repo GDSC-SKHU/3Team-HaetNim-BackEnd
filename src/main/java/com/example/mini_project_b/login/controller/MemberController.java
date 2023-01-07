@@ -24,12 +24,12 @@ public class MemberController {
     // User와 Admin 권한을 가진 사용자를 확인하기 위한 임시 api
     @GetMapping("/admin")
     public ResponseEntity<String> admin() {
-        return ResponseEntity.ok("admin");
+        return ResponseEntity.ok("admin page");
     }
 
     @GetMapping("/user")
     public ResponseEntity<String> user() {
-        return ResponseEntity.ok("user");
+        return ResponseEntity.ok("user page");
     }
 
     @GetMapping("/index")
@@ -48,20 +48,23 @@ public class MemberController {
 
     // 로그인을 진행할 수 있도록 하는 POST api
     @PostMapping("/login")
-    public TokenDTO login(@RequestBody LoginDTO memberLoginRequestDTO) {
-        String memberID = memberLoginRequestDTO.getMemberId();
-        String password = memberLoginRequestDTO.getPassword();
-        TokenDTO tokenDTO = memberService.login(memberID, password);
-        return tokenDTO;
+    public TokenDTO login(@RequestBody LoginDTO loginRequestDTO)
+    {
+        return memberService.login(loginRequestDTO);
     }
 
     // 회원가입을 진행할 수 있도록 하는 POST api
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody MemberJoinDto memberJoinDto) {
         memberService.join(memberJoinDto);
-        return ResponseEntity.ok("가입성공");
+        return ResponseEntity.ok("회원가입 성공");
     }
 
+    //test용
+    @GetMapping("/index")
+    public ResponseEntity<String> index() {
+        return ResponseEntity.ok("index");
+    }
 
 
 
@@ -80,5 +83,4 @@ public class MemberController {
         return ResponseEntity
                 .ok(responses);
     }
-
 }

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,11 +27,14 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final TokenProvider tokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public TokenDTO login(String memberId, String password){
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
+    public TokenDTO login(LoginDTO loginRequestDTO) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginRequestDTO.getMemberId(), loginRequestDTO.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        // return tokenProvider.createToken(authentication);
         TokenDTO tokenDTO = tokenProvider.createToken(authentication);
         return tokenDTO;
     }
@@ -41,7 +45,7 @@ public class MemberService {
         if(memberRepository.findByMemberId(memberJoinDto.getMemberId()).isPresent()) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
-
+        memberJoinDto.setPassword(passwordEncoder.encode(memberJoinDto.getPassword()));
         memberRepository.save(memberJoinDto.toEntity());
     }
 

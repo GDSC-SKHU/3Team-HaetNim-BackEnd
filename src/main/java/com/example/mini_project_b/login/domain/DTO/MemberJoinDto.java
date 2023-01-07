@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @Builder
 public class MemberJoinDto {
+
     private String memberId;
     private String password;
     private String nickname;
