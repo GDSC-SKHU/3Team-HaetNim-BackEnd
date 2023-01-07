@@ -1,7 +1,7 @@
 package com.example.mini_project_b.login.controller;
 
 
-import com.example.mini_project_b.login.domain.DTO.heart.HeartResponseDto;
+import com.example.mini_project_b.login.domain.DTO.HeartResponseDto;
 import com.example.mini_project_b.login.domain.Member;
 import com.example.mini_project_b.login.service.HeartService;
 import lombok.RequiredArgsConstructor;
