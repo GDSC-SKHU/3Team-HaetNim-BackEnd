@@ -22,12 +22,16 @@ public class PostController {
     // {memberId}의 프로필과 게시물을 모두 출력해주는 GET api
     @GetMapping("/@{memberId}")
     public ResponseEntity<MemberJoinDto> findAllByTeamId(
+            Principal principal,
             @PathVariable("memberId") String memberId
     ){
-
         MemberJoinDto member = memberService.findByUserPostId(memberId);
 
-        List<PostDTO> responses = postService.findAllByMemberId(memberId);
+        List<PostDTO> responses =
+                principal == null?
+                        postService.findAllByMemberId(null, memberId):
+                        postService.findAllByMemberId(principal, memberId);
+
         member.setPostDTOs(responses);
 
 //        if (responses.isEmpty()) {
@@ -39,6 +43,22 @@ public class PostController {
         return ResponseEntity
                 .ok(member);
     }
+
+
+    // {memberId}의 게시물을 응답하는 GET api
+    @GetMapping("/@{memberId}/{postId}")
+    public ResponseEntity<PostDTO> findByPostId(
+            @PathVariable("memberId") String memberId,
+            @PathVariable("postId") Long postId
+    ) {
+
+        PostDTO response = postService.findByMemberId(memberId,postId);
+
+        return ResponseEntity
+                .ok(response);
+    }
+
+
 
     // {memberId}의 프로필을 수정할 수 있도록 하는 PATCH api
     @PatchMapping("/@{memberId}/update")
@@ -55,18 +75,6 @@ public class PostController {
 
 
 
-    // {memberId}의 게시물을 응답하는 GET api
-    @GetMapping("/@{memberId}/{postId}")
-    public ResponseEntity<PostDTO> findByPostId(
-            @PathVariable("memberId") String memberId,
-            @PathVariable("postId") Long postId
-    ) {
-
-        PostDTO response = postService.findByMemberId(memberId,postId);
-
-        return ResponseEntity
-                .ok(response);
-    }
 
 
 

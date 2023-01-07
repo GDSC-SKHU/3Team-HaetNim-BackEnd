@@ -24,8 +24,10 @@ public class HeartController {
 
     //하트 카운트 1증가
     @PostMapping("/{postId}/like")
-    public ResponseEntity<HeartResponseDto> like(@PathVariable Long postId,
-                               @AuthenticationPrincipal Member userDetails) {
+    public ResponseEntity<HeartResponseDto> like(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal Member userDetails
+    ) {
         int heartCount = heartService.saveLikes(postId, userDetails);
         HeartResponseDto heartResponseDto = new HeartResponseDto(heartCount);
         return ResponseEntity.ok(heartResponseDto);
@@ -33,7 +35,10 @@ public class HeartController {
 
     //하트 카운트 1감소
     @DeleteMapping("/{postId}/delete")
-    public ResponseEntity<HeartResponseDto> remove(@PathVariable Long postId, @AuthenticationPrincipal Member userDetails) {
+    public ResponseEntity<HeartResponseDto> remove(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal Member userDetails
+    ) {
         int heartCount = heartService.deleteLikes(postId, userDetails);
         HeartResponseDto heartResponseDto = new HeartResponseDto(heartCount);
         return ResponseEntity.ok(heartResponseDto);

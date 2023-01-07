@@ -19,7 +19,7 @@ public class HeartService {
     @Transactional
     public int saveLikes(Long postId, Member userDetails) {
         Post post = postRepository.findById(postId).orElseThrow(() -> {
-            throw new IllegalArgumentException("X");
+            throw new IllegalArgumentException("해당 게시글은 존재하지 않습니다.");
         });
         return post.addHeartCount();
     }
@@ -27,7 +27,7 @@ public class HeartService {
     @Transactional
     public int deleteLikes(Long postId, Member userDetails) {
         Post post = postRepository.findById(postId).orElseThrow(() -> {
-            throw new IllegalArgumentException("X");
+            throw new IllegalArgumentException("해당 게시글은 존재하지 않습니다.");
         });
         return post.deleteHeartCount();
 }}

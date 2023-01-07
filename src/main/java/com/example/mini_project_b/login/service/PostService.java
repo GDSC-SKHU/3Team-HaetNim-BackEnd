@@ -4,8 +4,10 @@ import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import com.example.mini_project_b.login.domain.Member;
 import com.example.mini_project_b.login.domain.Post;
+import com.example.mini_project_b.login.domain.PostLike;
 import com.example.mini_project_b.login.jwt.TokenProvider;
 import com.example.mini_project_b.login.repository.MemberRepository;
+import com.example.mini_project_b.login.repository.PostLikeRepository;
 import com.example.mini_project_b.login.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +25,6 @@ import java.util.stream.Collectors;
 public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
-
-
-    private final TokenProvider tokenProvider;
-
 
 
     // accessToken의 사용자와 {memberId}와 같다면 게시물 생성 가능
@@ -55,9 +54,12 @@ public class PostService {
     public List<PostDTO> findAllisDisclosure(){
         List<Post> posts = postRepository.findAll();
 
+
+
         for(int i =0; i<posts.size();i++)
-            if(!posts.get(i).isDisclosure())
+            if (!posts.get(i).isDisclosure())
                 posts.remove(i);
+
 
         return posts.stream()
                 .map(Post::toDTO)
@@ -65,10 +67,11 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostDTO> findAllByMemberId(String member_id){
+    public List<PostDTO> findAllByMemberId(Principal principal,String member_id){
         Member member = findEntityByMemberId(member_id);
 
         List<Post> posts = postRepository.findAllByMember(member);
+
 
         return posts.stream()
                 .map(Post::toDTO)

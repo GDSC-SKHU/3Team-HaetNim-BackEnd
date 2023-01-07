@@ -34,4 +34,9 @@ public class PostDTO {
     private LocalDateTime lastModifiedDate;
 
     private MemberJoinDto memberJoinDto;
+
+    private boolean postLike;
+
+    private Integer heartCount;
+
 }
