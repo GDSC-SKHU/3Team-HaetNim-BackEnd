@@ -72,7 +72,7 @@ public class MemberController {
     public ResponseEntity<List<PostDTO>> mainFindAll(
             Principal principal
     ){
-        List<PostDTO> responses = postLikeService.findByPostLike(
+        List<PostDTO> responses = postLikeService.findAllPostLike(
                 principal,
                 postService.findAllisDisclosure()
         );

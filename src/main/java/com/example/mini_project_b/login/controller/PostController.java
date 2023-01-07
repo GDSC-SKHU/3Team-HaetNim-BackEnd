@@ -5,6 +5,7 @@ import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import com.example.mini_project_b.login.domain.Member;
 import com.example.mini_project_b.login.domain.Post;
 import com.example.mini_project_b.login.service.MemberService;
+import com.example.mini_project_b.login.service.PostLikeService;
 import com.example.mini_project_b.login.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ public class PostController {
     private final PostService postService;
     private final MemberService memberService;
 
+    private final PostLikeService postLikeService;
+
     // {memberId}의 프로필과 게시물을 모두 출력해주는 GET api
     @GetMapping("/@{memberId}")
     public ResponseEntity<MemberJoinDto> findAllByTeamId(
@@ -28,10 +31,11 @@ public class PostController {
     ){
         MemberJoinDto member = memberService.findByUserPostId(memberId);
 
-        List<PostDTO> responses =
-                principal == null?
-                        postService.findAllByMemberId(null, memberId):
-                        postService.findAllByMemberId(principal, memberId);
+        List<PostDTO> responses = postLikeService.findAllPostLike(
+                principal,
+                postService.findAllByMemberId(principal, memberId)
+        );
+
 
         member.setPostDTOs(responses);
 
@@ -49,11 +53,15 @@ public class PostController {
     // {memberId}의 게시물을 응답하는 GET api
     @GetMapping("/@{memberId}/{postId}")
     public ResponseEntity<PostDTO> findByPostId(
+            Principal principal,
             @PathVariable("memberId") String memberId,
             @PathVariable("postId") Long postId
     ) {
-
-        PostDTO response = postService.findByMemberId(memberId,postId);
+        PostDTO response =
+                postLikeService.findByPostLike(
+                        principal,
+                        postService.findByMemberId(memberId,postId)
+                );
 
         return ResponseEntity
                 .ok(response);

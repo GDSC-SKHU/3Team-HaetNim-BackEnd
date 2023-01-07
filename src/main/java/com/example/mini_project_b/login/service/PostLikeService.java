@@ -27,7 +27,7 @@ public class PostLikeService {
 
 
     @Transactional(readOnly = true)
-    public List<PostDTO> findByPostLike(Principal principal,List<PostDTO> dto){
+    public List<PostDTO> findAllPostLike(Principal principal,List<PostDTO> dto){
         if(principal != null) {
             Member member = memberRepository.findByMemberId(principal.getName())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다."));
@@ -43,6 +43,23 @@ public class PostLikeService {
 
         return dto;
     }
+
+    @Transactional(readOnly = true)
+    public PostDTO findByPostLike(Principal principal,PostDTO dto){
+        if(principal != null) {
+            Member member = memberRepository.findByMemberId(principal.getName())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다."));
+
+            List<PostLike> postLikes = postLikeRepository.findPostLikesByMember(member);
+
+            for (PostLike pl : postLikes)
+                if (dto.getId() == pl.getPost().getId())
+                    dto.setPostLike(true);
+        }
+
+        return dto;
+    }
+
 
 
     @Transactional
