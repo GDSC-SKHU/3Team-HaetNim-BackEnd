@@ -1,5 +1,6 @@
 package com.example.mini_project_b.login.domain;
 
+import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,7 +51,23 @@ public class Post extends BaseTimeEntity {
                 .content(content)
                 .img(img)
                 .disclosure(disclosure)
+                .createDate(createDate)
+                .lastModifiedDate(lastModifiedDate)
+                .memberJoinDto(MemberJoinDto.builder()
+                        .memberId(member.getMemberId())
+                        .nickname(member.getNickname())
+                        .statusMessage(member.getStatusMessage())
+                        .profileImg(member.getProfileImg())
+                        .build())
                 .build();
+    }
+
+
+    public void update(PostDTO dto) {
+        this.title = dto.getTitle();
+        this.content = dto.getContent();
+        this.img=dto.getImg();
+        this.disclosure=dto.isDisclosure();
     }
 
 

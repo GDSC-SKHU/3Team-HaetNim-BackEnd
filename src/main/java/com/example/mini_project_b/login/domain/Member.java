@@ -1,6 +1,7 @@
 package com.example.mini_project_b.login.domain;
 
 
+import com.example.mini_project_b.login.domain.DTO.MemberJoinDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,11 +38,15 @@ public class Member implements UserDetails {
     @Column(name="profileImg", nullable = true,length = 200)
     private String profileImg;
 
-    @Column(name="nickname",nullable = false,length = 100)
-    private String nickname;
-
     @Column(name="statusMessage",nullable = true,length = 100)
     private String statusMessage;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
+    @Column(name="nickname",nullable = false,length = 100)
+    private String nickname;
 
     @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Follow> followerList;
@@ -55,9 +61,7 @@ public class Member implements UserDetails {
 //    @Enumerated(EnumType.STRING)
 //    private Role role;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,6 +69,7 @@ public class Member implements UserDetails {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
+
     @Override
     public String getUsername() {
         return memberId;
@@ -89,6 +94,25 @@ public class Member implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public void update(MemberJoinDto dto) {
+        if(dto.getNickname() !=null)
+            this.nickname = dto.getNickname();
+        if(dto.getStatusMessage() != null)
+            this.statusMessage = dto.getStatusMessage();
+        if(dto.getProfileImg() != null)
+            this.profileImg = dto.getProfileImg();
+    }
+
+
+    public MemberJoinDto toJoinEntity() {
+        return MemberJoinDto.builder()
+                .nickname(nickname)
+                .statusMessage(statusMessage)
+                .profileImg(profileImg)
+                .build();
+    }
+
 }
     /**
      * - user : post = 1 : n
