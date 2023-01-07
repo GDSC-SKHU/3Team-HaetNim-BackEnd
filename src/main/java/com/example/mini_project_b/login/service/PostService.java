@@ -26,6 +26,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
 
+    private final PostLikeService postLikeService;
+
 
     // accessToken의 사용자와 {memberId}와 같다면 게시물 생성 가능
     @Transactional
@@ -72,22 +74,28 @@ public class PostService {
 
         List<Post> posts = postRepository.findAllByMember(member);
 
+        List<PostDTO> postDTOs =postLikeService.findAllPostLike(
+                    principal,
+                    posts.stream()
+                    .map(Post::toDTO)
+                    .collect(Collectors.toList())
+                );
 
-        return posts.stream()
-                .map(Post::toDTO)
-                .collect(Collectors.toList());
+        return postDTOs;
     }
 
 
 
     @Transactional(readOnly = true)
-    public PostDTO findByMemberId(String member_id, Long id){
+    public PostDTO findByMemberId(Principal principal,String member_id, Long id){
         Post post = findEntityById(id);
         if(!member_id.equals(post.getMember().getMemberId()))
 //            System.out.println(member_id+" "+principal.getName());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,member_id+"는 이 게시글을 가지고 있지 않습니다.");
 
-        return post.toDTO();
+        PostDTO postDTO = postLikeService.findByPostLike(principal,post.toDTO());
+
+        return postDTO;
     }
 
 

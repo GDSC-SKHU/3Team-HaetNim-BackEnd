@@ -25,7 +25,7 @@ public class MemberController {
     private final PostLikeService postLikeService;
 
 
-    // User와 Admin 권한을 가진 사용자를 확인하기 위한 임시 api
+    // ---- User와 Admin 권한을 가진 사용자를 확인하기 위한 임시 api ----
     @GetMapping("/admin")
     public ResponseEntity<String> admin() {
         return ResponseEntity.ok("admin page");

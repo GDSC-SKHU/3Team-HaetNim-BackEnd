@@ -31,10 +31,7 @@ public class PostController {
     ){
         MemberJoinDto member = memberService.findByUserPostId(memberId);
 
-        List<PostDTO> responses = postLikeService.findAllPostLike(
-                principal,
-                postService.findAllByMemberId(principal, memberId)
-        );
+        List<PostDTO> responses = postService.findAllByMemberId(principal, memberId);
 
 
         member.setPostDTOs(responses);
@@ -57,11 +54,7 @@ public class PostController {
             @PathVariable("memberId") String memberId,
             @PathVariable("postId") Long postId
     ) {
-        PostDTO response =
-                postLikeService.findByPostLike(
-                        principal,
-                        postService.findByMemberId(memberId,postId)
-                );
+        PostDTO response = postService.findByMemberId(principal, memberId,postId);
 
         return ResponseEntity
                 .ok(response);
