@@ -1,13 +1,19 @@
 package com.example.mini_project_b.login.service;
 
 
+import com.example.mini_project_b.login.domain.DTO.PostDTO;
 import com.example.mini_project_b.login.domain.Hashtag;
+import com.example.mini_project_b.login.domain.PostHashtag;
 import com.example.mini_project_b.login.repository.HashTagRepository;
+import com.example.mini_project_b.login.repository.PostHashTagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,49 +21,17 @@ import java.util.Optional;
 public class HashtagService {
     private final HashTagRepository hashTagRepository;
 
-    public ResponseEntity<?> getAllHashTags() {
-        return new ResponseEntity<>(hashTagRepository.findAll(), HttpStatus.OK);
+    private final PostHashTagRepository postHashTagRepository;
+
+    public List<Hashtag> getAllHashTags() {
+        return hashTagRepository.findAll();
     }
 
-    public ResponseEntity<?> findHashTagById(Long id) {
-        Optional<Hashtag> hashTagOptional = hashTagRepository.findById(id);
-
-        if (hashTagOptional.isPresent()) {
-            return new ResponseEntity<>(hashTagOptional.get(), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public Hashtag saveHashTag(Hashtag hashTag) {
+        return hashTagRepository.save(hashTag);
     }
 
-    public ResponseEntity<?> saveHashTag(Hashtag hashTag) {
-        return new ResponseEntity<>(hashTagRepository.save(hashTag),
-                HttpStatus.CREATED);
-    }
-
-    public ResponseEntity<?> deleteHashTag(Long id) {
-        Optional<Hashtag> hashTagOptional = hashTagRepository.findById(id);
-
-        if (hashTagOptional.isPresent()) {
-            hashTagRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    public ResponseEntity<?> updateHashTag(Long id, Hashtag hashTag) {
-        Optional<Hashtag> hashTagOptional = hashTagRepository.findById(id);
-
-        if (hashTagOptional.isPresent()) {
-            Hashtag updatedHashTag = hashTagOptional.get();
-            updatedHashTag.setTag(hashTag.getTag());
-            return new ResponseEntity<>(hashTagRepository.save(updatedHashTag), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    public Optional<Hashtag> findHashTagByTag(String tag) {
+    public Hashtag findHashTagByTag(String tag) {
         return hashTagRepository.findHashTagByTag(tag);
     }
 

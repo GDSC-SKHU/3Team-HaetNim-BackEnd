@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,10 +56,10 @@ public class Member implements UserDetails {
     // post foreignkey 생성
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Post> posts =new ArrayList<>();
-//
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
 
+    // PostLike forignkey 생성
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<PostLike> postLikes =new ArrayList<>();
 
 
     @Override

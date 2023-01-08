@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Getter
@@ -34,4 +36,12 @@ public class PostDTO {
     private LocalDateTime lastModifiedDate;
 
     private MemberJoinDto memberJoinDto;
+
+    private boolean postLike;
+
+    private Integer heartCount;
+
+    private List<String> hashTags =new ArrayList<>();
+
+
 }
