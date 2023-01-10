@@ -9,8 +9,10 @@ import com.example.mini_project_b.login.domain.Post;
 import com.example.mini_project_b.login.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -107,6 +109,28 @@ public class MemberController {
         return ResponseEntity
                 .ok(member);
     }
+    @GetMapping("/@{memberId}/bookmark")
+    public ResponseEntity<List<PostDTO>> todoBookmark(
+            Principal principal,
+            @PathVariable("memberId") String memberId
+    ){
+
+
+        List<PostDTO> responses = postService.findAllByMemberId(principal, memberId);
+        for(int i =0;i<responses.size();i++)
+            if(!responses.get(i).isPostLike())
+                responses.remove(i--);
+
+//        if (responses.isEmpty()) {
+//            return ResponseEntity
+//                    .noContent()
+//                    .build();
+//        }
+
+        return ResponseEntity
+                .ok(responses);
+    }
+
 
     // {memberId}의 게시물을 응답하는 GET api
 //    @GetMapping("/@{memberId}/{postId}")
@@ -142,4 +166,5 @@ public class MemberController {
 //
 //        return ResponseEntity.ok(responses);
 //    }
+
 }

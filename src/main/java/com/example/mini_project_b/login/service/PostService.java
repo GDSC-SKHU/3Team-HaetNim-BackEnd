@@ -50,7 +50,7 @@ public class PostService {
                         .title(dto.getTitle())
                         .content(dto.getContent())
                         .date(dto.getDate())
-                        .isletter(dto.is_letter())
+                        .letter(dto.isLetter())
                         .member(member)
                         .build()
         );
@@ -93,7 +93,7 @@ public class PostService {
         List<Post> posts = postRepository.findAll();
 
         for(int i =0; i<posts.size();i++) {
-            if (!posts.get(i).isIsletter())
+            if (!posts.get(i).isLetter())
                 posts.remove(i);
         }
 
@@ -112,6 +112,8 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public List<PostDTO> findAllByMemberId(Principal principal,String member_id){
+        if(!member_id.equals(principal.getName()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신만 볼 수 있습니다.");
         Member member = findEntityByMemberId(member_id);
 
         List<Post> posts = postRepository.findAllByMember(member);
@@ -123,6 +125,8 @@ public class PostService {
                 .collect(Collectors.toList())
         );
     }
+
+
     public List<PostDTO> addHashTagLike(Principal principal,List<PostDTO> posts){
         return postHashtagService.findAllHashtags(
                 postLikeService.findAllPostLike(
