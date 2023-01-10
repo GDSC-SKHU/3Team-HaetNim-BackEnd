@@ -31,11 +31,11 @@ public class Post extends BaseTimeEntity {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "img", nullable = true, length = 300)
-    private String img;
+    @Column(name = "date", nullable = true, length = 300)
+    private String date;
 
-    @Column(name = "disclosure", nullable = false)
-    private boolean disclosure;
+    @Column(name = "isletter", nullable = false)
+    private boolean isletter;
 
 
     @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)
@@ -62,8 +62,8 @@ public class Post extends BaseTimeEntity {
                 .id(id)
                 .title(title)
                 .content(content)
-                .img(img)
-                .disclosure(disclosure)
+                .date(date)
+                .is_letter(isletter)
                 .createDate(createDate)
                 .lastModifiedDate(lastModifiedDate)
                 .memberJoinDto(MemberJoinDto.builder()
@@ -87,8 +87,8 @@ public class Post extends BaseTimeEntity {
     public void update(PostDTO dto) {
         this.title = dto.getTitle();
         this.content = dto.getContent();
-        this.img=dto.getImg();
-        this.disclosure=dto.isDisclosure();
+        this.date=dto.getDate();
+        this.isletter=dto.is_letter();
     }
 
 
