@@ -30,12 +30,11 @@ public class Member implements UserDetails {
     @Column(name = "member_id", nullable = false)
     private String memberId;
 
-
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
-    @Column(name="profileImg", nullable = true,length = 200)
-    private String profileImg;
+    @Column(name="isLetterWrite", nullable = true, length = 200)
+    private boolean isLetterWrite;
 
     @Column(name="statusMessage",nullable = true,length = 100)
     private String statusMessage;
@@ -99,8 +98,8 @@ public class Member implements UserDetails {
             this.nickname = dto.getNickname();
         if(dto.getStatusMessage() != null)
             this.statusMessage = dto.getStatusMessage();
-        if(dto.getProfileImg() != null)
-            this.profileImg = dto.getProfileImg();
+        if(!this.isLetterWrite)
+            this.isLetterWrite = dto.isLetterWrite();
     }
 
 
@@ -108,7 +107,7 @@ public class Member implements UserDetails {
         return MemberJoinDto.builder()
                 .nickname(nickname)
                 .statusMessage(statusMessage)
-                .profileImg(profileImg)
+                .isLetterWrite(isLetterWrite)
                 .build();
     }
 

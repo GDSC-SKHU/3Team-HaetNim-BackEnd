@@ -63,7 +63,9 @@ public class MemberService {
     }
 
     @Transactional
-    public MemberJoinDto findByUserPostId(String member_id) {
+    public MemberJoinDto findByUserPostId(Principal principal, String member_id) {
+        if(!member_id.equals(principal.getName()))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"자신만 볼 수 있습니다.");
         Member member = findEntityByMemberId(member_id);
         return member.toJoinEntity();
     }

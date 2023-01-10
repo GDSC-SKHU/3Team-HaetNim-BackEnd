@@ -20,7 +20,7 @@ public class MemberJoinDto {
 
     private String statusMessage;
 
-    private String profileImg;
+    private boolean isLetterWrite;
 
     private List<PostDTO> postDTOs;
 
@@ -31,7 +31,7 @@ public class MemberJoinDto {
                 .password(password)
                 .nickname(nickname)
                 .statusMessage(statusMessage)
-                .profileImg(profileImg)
+                .isLetterWrite(isLetterWrite)
                 .roles(Collections.singletonList("USER"))
                 .build();
     }

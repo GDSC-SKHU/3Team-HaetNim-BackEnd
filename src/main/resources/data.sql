@@ -1,7 +1,7 @@
 use jwt;
 
-insert into member(member_id, nickname, password,profile_img,status_message) values ('member_A','hello','1234',false,'굳!!');
-insert into member(member_id, nickname, password,profile_img,status_message) values ('member_B','helloee','1234',false,'굳!!');
+insert into member(member_id, nickname, password, is_letter_write, status_message) values ('member_A','hello','1234', true,'굳!!');
+insert into member(member_id, nickname, password, is_letter_write, status_message) values ('member_B','helloee','1234', true,'굳!!');
 insert into member_roles(member_id, roles) values (1, 'ADMIN');
 insert into member_roles(member_id, roles) values (2, 'USER');
 
