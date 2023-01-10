@@ -49,8 +49,8 @@ public class PostService {
                 Post.builder()
                         .title(dto.getTitle())
                         .content(dto.getContent())
-                        .img(dto.getImg())
-                        .disclosure(dto.isDisclosure())
+                        .date(dto.getDate())
+                        .isletter(dto.is_letter())
                         .member(member)
                         .build()
         );
@@ -93,7 +93,7 @@ public class PostService {
         List<Post> posts = postRepository.findAll();
 
         for(int i =0; i<posts.size();i++) {
-            if (!posts.get(i).isDisclosure())
+            if (!posts.get(i).isIsletter())
                 posts.remove(i);
         }
 
@@ -191,10 +191,6 @@ public class PostService {
                             .post(post)
                             .build()
             );
-
-
-
-
         post.update(dto);
 
         postRepository.saveAndFlush(post);

@@ -46,12 +46,6 @@ public class Member implements UserDetails {
     @Column(name="nickname",nullable = false,length = 100)
     private String nickname;
 
-    @OneToMany(mappedBy = "follower",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Follow> followerList;
-
-    @OneToMany(mappedBy = "followee",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private  List<Follow> followeeList;
-
     // post foreignkey 생성
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY,cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Post> posts =new ArrayList<>();

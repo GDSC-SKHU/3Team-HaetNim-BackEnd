@@ -26,10 +26,10 @@ public class PostDTO {
     @NotBlank
     private String content;
 
-    private String img;
+    private String date;
 
     @NotBlank
-    private boolean disclosure;
+    private boolean is_letter;
 
     private LocalDateTime createDate;
 
