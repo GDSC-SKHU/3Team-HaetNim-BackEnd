@@ -40,7 +40,7 @@ public class PostController {
             @PathVariable("memberId") String memberId,
             @RequestBody PostDTO request
     ) {
-        System.out.println("@@@@@@@@@@+ "+ request.getHashTags());
+        System.out.println("@@@@@@@@@@+ "+ request.isLetter());
 
         Post response = postService.saveByPostId(principal, memberId, request);
 

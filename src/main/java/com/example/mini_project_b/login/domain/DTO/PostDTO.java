@@ -28,14 +28,11 @@ public class PostDTO {
 
     private String date;
 
-    @NotBlank
-    private boolean is_letter;
+    private boolean letter;
 
     private LocalDateTime createDate;
 
     private LocalDateTime lastModifiedDate;
-
-    private MemberJoinDto memberJoinDto;
 
     private boolean postLike;
 

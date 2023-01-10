@@ -31,11 +31,11 @@ public class Post extends BaseTimeEntity {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "date", nullable = true, length = 300)
+    @Column(name = "date", nullable = false, length = 300)
     private String date;
 
-    @Column(name = "isletter", nullable = false)
-    private boolean isletter;
+    @Column(name = "letter", nullable = false)
+    private boolean letter;
 
 
     @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)
@@ -63,14 +63,9 @@ public class Post extends BaseTimeEntity {
                 .title(title)
                 .content(content)
                 .date(date)
-                .is_letter(isletter)
+                .letter(letter)
                 .createDate(createDate)
                 .lastModifiedDate(lastModifiedDate)
-                .memberJoinDto(MemberJoinDto.builder()
-                        .memberId(member.getMemberId())
-                        .nickname(member.getNickname())
-                        .statusMessage(member.getStatusMessage())
-                        .build())
                 .postLike(false)
                 .heartCount(postLikes.size())
                 .build();
@@ -87,7 +82,8 @@ public class Post extends BaseTimeEntity {
         this.title = dto.getTitle();
         this.content = dto.getContent();
         this.date=dto.getDate();
-        this.isletter=dto.is_letter();
+        if(!this.letter)
+            this.letter=dto.isLetter();
     }
 
 
