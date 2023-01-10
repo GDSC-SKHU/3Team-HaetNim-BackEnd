@@ -70,7 +70,6 @@ public class Post extends BaseTimeEntity {
                         .memberId(member.getMemberId())
                         .nickname(member.getNickname())
                         .statusMessage(member.getStatusMessage())
-                        .profileImg(member.getProfileImg())
                         .build())
                 .postLike(false)
                 .heartCount(postLikes.size())
